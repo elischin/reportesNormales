@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="semestres" language="groovy" pageWidth="556" pageHeight="420" columnWidth="556" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="3a5c7807-0564-46a1-bea2-e7d83f7bc2c6">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="217"/>
+	<parameter name="idalu" class="java.lang.Integer"/>
+	<parameter name="cvecarrera" class="java.lang.Integer"/>
+	<parameter name="idcct" class="java.lang.Integer"/>
+	<parameter name="planestud" class="java.lang.Integer"/>
+	<parameter name="cct" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select count(semestre) as numSeme
+from alumnogdo_certi
+where idalu = $P{idalu}
+and cvecarrera = $P{cvecarrera}
+and planestud = $P{planestud}
+and idcct = $P{idcct}]]>
+	</queryString>
+	<field name="numSeme" class="java.lang.Long"/>
+	<detail>
+		<band height="420" splitType="Stretch">
+			<rectangle radius="3">
+				<reportElement mode="Transparent" x="0" y="0" width="556" height="420" uuid="59a978ee-c871-42b2-a879-76c5288377c9"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<frame>
+				<reportElement mode="Transparent" x="0" y="15" width="244" height="405" uuid="343d00f4-8c62-4ec8-95b4-dd95242b55a5"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement mode="Transparent" x="244" y="15" width="34" height="405" uuid="2df7949a-65bb-4f37-afbf-8df23eb28563"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement x="278" y="14" width="244" height="406" uuid="99fbf3c4-6a5c-4390-92cf-711072185eda"/>
+				<box>
+					<rightPen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement x="522" y="14" width="34" height="406" uuid="dd118012-19a1-4fb2-b109-36f0cbcb7108"/>
+				<box>
+					<rightPen lineWidth="0.0"/>
+				</box>
+			</frame>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="15" width="278" height="101" uuid="cd4968b4-3a7b-416b-be2d-dadc693b480b"/>
+				<subreportParameter name="idcct">
+					<subreportParameterExpression><![CDATA[$P{idcct}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$P{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[1]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$P{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cct">
+					<subreportParameterExpression><![CDATA[$P{cct}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="116" width="278" height="101" uuid="88faabc3-1f59-464d-a681-1722c8d3f882"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$P{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[2]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$P{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cct">
+					<subreportParameterExpression><![CDATA[$P{cct}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="217" width="278" height="101" uuid="6af5fcd6-f15f-42f4-b0f5-1a7fb5dd041b"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$P{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[3]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$P{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cct">
+					<subreportParameterExpression><![CDATA[$P{cct}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="318" width="278" height="101" uuid="3eced4bd-1875-4bc9-b3d3-dd81641271dd"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$P{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[4]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$P{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cct">
+					<subreportParameterExpression><![CDATA[$P{cct}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="278" y="15" width="278" height="101" uuid="fb239f5d-ec77-420c-b0b1-21ed1ddd3170"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$P{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[5]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$P{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cct">
+					<subreportParameterExpression><![CDATA[$P{cct}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="278" y="116" width="278" height="101" uuid="9cb7bb1c-2dbc-4515-8253-59500b60004d"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$P{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[6]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$P{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cct">
+					<subreportParameterExpression><![CDATA[$P{cct}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="278" y="217" width="278" height="101" uuid="f915aebc-8dd2-4e04-b6b7-2cec6a735aa6"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$P{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[7]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$P{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cct">
+					<subreportParameterExpression><![CDATA[$P{cct}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport runToBottom="true">
+				<reportElement positionType="Float" x="278" y="318" width="278" height="101" uuid="a8e3ab41-e130-4a7d-ad11-1f2f73f379bf"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$P{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[8]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$P{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cct">
+					<subreportParameterExpression><![CDATA[$P{cct}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement positionType="Float" x="244" y="0" width="34" height="15" uuid="e9531759-d17f-4194-9c95-2234572a6c0b"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="MontserratRegularReport" size="6"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[CALIF. FINAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="278" y="0" width="244" height="15" uuid="d77a247a-5d85-4d31-add6-53a3ab30ec2f"/>
+				<box>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="MontserratRegularReport" size="7"/>
+				</textElement>
+				<text><![CDATA[ASIGNATURAS / CURSOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="522" y="0" width="34" height="15" uuid="33104360-86ef-44ab-8703-de5379d5ad92"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[CALIF. FINAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="244" height="15" uuid="6744a339-55f6-479c-9845-a92de283b7aa"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="MontserratRegularReport" size="7"/>
+				</textElement>
+				<text><![CDATA[ASIGNATURAS / CURSOS]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

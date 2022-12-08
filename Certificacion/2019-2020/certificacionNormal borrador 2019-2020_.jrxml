@@ -1,0 +1,690 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="certificacionNormal borrador 2019-2020" language="groovy" pageWidth="612" pageHeight="792" columnWidth="556" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="935a6434-8a1b-4750-95e1-3657ad457288">
+	<property name="ireport.zoom" value="1.7715610000000013"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="880"/>
+	<parameter name="idcct" class="java.lang.String"/>
+	<parameter name="arrayIdalus" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select n.cct,n.nombreEscuela,
+replace(substring(n.nombreEscuela,1,locate(' ',n.nombreEscuela)-1),'"','') as tipoesc,
+n.cveinstitucion,"" as folio,a.tipocerti,
+a.idalu,ag.idcct,ag.planestud,ag.semestre,
+a.curp, a.nombre, a.apepat, a.apemat,concat(a.nombre,' ',a.apepat,' ',a.apemat) as nom_tot,
+(select case when length(trim(especialidad))=0 then trim(licenciatura) else concat(licenciatura,' ',especialidad) end
+        from siceen.catnormallic where cvecarrera = ag.cvecarrera and idcct = ag.idcct and genero = substring(a.curp,11,1)) as nomAcredit,
+(select descarrera from catcarreras where cvecarrera = ag.cvecarrera) as desCarrera,
+ag.planestud as plan_estud,pa.creditos,pa.curs_asig,upper(pa.tipoCreditos) as tipoCreditos,
+(SELECT letra from cursosasignados where curs_asig = pa.curs_asig) as cursAsig_letra,
+IFNULL((select sum(creditos) from alumnomaterias_certi ac,  plan_materias pm, materias m
+        where ac.idalu=ag.idalu AND ac.cvetipmat=pm.cvetipmat  AND ac.cvemat = pm.cvemat AND pm.cvecarrera=pa.cvecarrera AND pm.idmateria=m.idmateria AND ac.promedio>=6),'') AS creditos_aprob,
+(select COUNT(*) from alumnomaterias_certi WHERE idalu=ag.idalu AND promedio>=6) AS curs_aprob,
+IFNULL((SELECT letra from cursosasignados where curs_asig =(select count(*) from alumnomaterias_certi WHERE idalu=ag.idalu AND promedio>=6)),'') as cursAprob_letra,
+a.cicescinilib,(a.cicescinilib+1) as cicescfinlib,ag.cicescini,
+(select promediogral from alumnogdo_certi agc where agc.idalu = ag.idalu and agc.cvecarrera = ag.cvecarrera and semestre=8) as promediogral,ag.cvecarrera, n.desmunicipio as desmunicipio,
+"" as sellodigitalieepo,"" as fechatimbradoieepo,"" as firmante, "" as cargofirmante, "" as numcertfirmante
+from catnormal n, alumno_certi a,  alumnogdo_certi ag, siceen.plan_carrera pa
+where a.cicescinilib = 2019
+$P!{arrayIdalus}
+/*and a.idalu in (2883)*/
+and a.idalu = ag.idalu
+and n.idcct = ag.idcct
+and a.tipocerti = 'D'
+and ag.cvecarrera = pa.cvecarrera
+and ag.planestud = pa.plan_estud
+group by n.cct,ag.idalu
+order by n.cct,ag.idalu]]>
+	</queryString>
+	<field name="cct" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreEscuela" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipoesc" class="java.lang.String"/>
+	<field name="cveinstitucion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="folio" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipocerti" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idalu" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idcct" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="planestud" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="semestre" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="curp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="apepat" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="apemat" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nom_tot" class="java.lang.String"/>
+	<field name="nomAcredit" class="java.lang.String"/>
+	<field name="desCarrera" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plan_estud" class="java.lang.Integer"/>
+	<field name="creditos" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="curs_asig" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipoCreditos" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cursAsig_letra" class="java.lang.String"/>
+	<field name="creditos_aprob" class="java.lang.Double"/>
+	<field name="curs_aprob" class="java.lang.Long"/>
+	<field name="cursAprob_letra" class="java.lang.String"/>
+	<field name="cicescinilib" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cicescfinlib" class="java.lang.Long"/>
+	<field name="cicescini" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="promediogral" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cvecarrera" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="desmunicipio" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sellodigitalieepo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechatimbradoieepo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="firmante" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cargofirmante" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numcertfirmante" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<pageHeader>
+		<band height="87" splitType="Stretch">
+			<image>
+				<reportElement x="275" y="1" width="144" height="45" uuid="3fd025e8-e5f8-46e0-acaf-c94ca2dde795"/>
+				<imageExpression><![CDATA["../../../imgs/Isologo y escudo - Gobierno del Estado.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="64" width="556" height="10" uuid="2b1ab243-9975-4bc3-ac30-b61c8c58b751"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="GMX BoldReport" size="8"/>
+				</textElement>
+				<text><![CDATA[EDUCACIÓN NORMAL]]></text>
+			</staticText>
+			<image>
+				<reportElement x="143" y="1" width="147" height="45" uuid="2296b277-b304-4ed7-9afd-90b843341134"/>
+				<imageExpression><![CDATA["../../../imgs/SELLO SEP LINEA 2.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="75" width="556" height="10" uuid="17a4f19c-eb8f-4a40-9097-7f0ee78626a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="GMX BoldReport" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CERTIFICACIÓN DE ESTUDIOS"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="51" width="556" height="12" uuid="16209a28-c902-468f-b3f1-da31cb15f520"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="GMX BoldReport" size="10"/>
+				</textElement>
+				<text><![CDATA[SISTEMA EDUCATIVO NACIONAL]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="81" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="556" height="80" uuid="7e10055c-df42-4fa7-8f8a-e136dac9f104"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<font fontName="MontserratRegularReport" size="7"/>
+					<paragraph lineSpacing="Proportional"/>
+				</textElement>
+				<textFieldExpression><![CDATA["El INSTITUTO ESTATAL DE EDUCACIÓN PÚBLICA DE OAXACA, a través " +
+(" "+($F{tipoesc}=="ESCUELA"? "de la ":"del ") + $F{nombreEscuela} + ", con Clave de Centro de Trabajo " + $F{cct})
++", CERTIFICA que <style forecolor='black' isBold='true'>" + $F{nom_tot} + "</style>, con CURP " + $F{curp} +
+", cursó los estudios"+($F{curs_aprob}<$F{curs_asig} ? " parciales": " completos")+ " de " + $F{nomAcredit} + ", en la modalidad Escolarizada, conforme al Plan de Estudios " + $F{plan_estud} +
+", con clave de carrera "+ $F{cvecarrera} + " y clave de institución " + $F{cveinstitucion} +
+", según constancias que obran en el Área de Control Escolar." +
+"\n\nEste documento ampara "+$F{cursAprob_letra}+" "+$F{tipoCreditos}+($F{tipoCreditos}.trim()=="CURSOS" ? " acreditados" :" acreditadas") +
+" de un total de "+$F{cursAsig_letra}+" "+$F{tipoCreditos}+", " +
+"que integran el Plan de Estudios respectivo, correspondientes a "+$F{creditos_aprob}+" créditos." +
+"\n\nLa presente se expide en "+ $F{desmunicipio} + ", OAXACA,     "]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="562" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{curs_aprob}<56]]></printWhenExpression>
+			<image>
+				<reportElement x="0" y="59" width="505" height="498" uuid="43dc05d0-8ed1-4538-84b9-61065f8d06e0"/>
+				<imageExpression><![CDATA["../../../imgs/FONDO AGUILA V.png"]]></imageExpression>
+			</image>
+			<frame>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="244" y="15" width="34" height="397" uuid="56fe78d1-826e-471a-9c91-a70a60d69897"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<rectangle radius="3">
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="556" height="412" uuid="a64aa604-b007-4ef0-92ae-d22f05951f42"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<frame>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="15" width="244" height="397" uuid="5caefea1-19a7-4c45-8eba-4b43425496fe"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+			</frame>
+			<subreport>
+				<reportElement positionType="Float" x="278" y="15" width="278" height="99" uuid="8cf928fe-2128-434f-8972-5e340c2429bf"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[5]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="312" width="278" height="99" uuid="67ca9ab4-db56-482d-aeaf-0d5893aeeeef"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[4]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="278" y="213" width="278" height="99" uuid="c48b8aec-7f3d-497e-bf1f-3b4ccc32ae78"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[7]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="244" height="15" uuid="26a6b5e0-8508-482c-8b2e-2b2a9d3fb008"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="MontserratRegularReport" size="7"/>
+				</textElement>
+				<text><![CDATA[ASIGNATURAS / CURSOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="278" y="0" width="244" height="15" uuid="e735806b-5b66-4cd6-b9cf-bacdef97ecb0"/>
+				<box>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="MontserratRegularReport" size="7"/>
+				</textElement>
+				<text><![CDATA[ASIGNATURAS / CURSOS]]></text>
+			</staticText>
+			<frame>
+				<reportElement stretchType="RelativeToBandHeight" x="278" y="15" width="244" height="397" uuid="238d796e-f5ec-4d8e-b916-f5f6a57d2bbb"/>
+				<box>
+					<rightPen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<staticText>
+				<reportElement positionType="Float" x="522" y="0" width="34" height="15" uuid="b00412a6-1a9e-4c18-9097-e6783e4bf3c1"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[CALIF. FINAL]]></text>
+			</staticText>
+			<subreport>
+				<reportElement positionType="Float" x="278" y="312" width="278" height="99" uuid="6a74a714-3b5c-4468-ad86-2f82bfa88e15"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[8]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<frame>
+				<reportElement stretchType="RelativeToBandHeight" x="522" y="15" width="34" height="397" uuid="756d0d09-16cf-4d03-a38b-cf950a52f968"/>
+				<box>
+					<rightPen lineWidth="0.0"/>
+				</box>
+			</frame>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="213" width="278" height="99" uuid="1cd11ada-809f-49c4-9d34-64e337cba552"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[3]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="114" width="278" height="99" uuid="b629bd86-b4c0-47a9-9552-7cfc4f94a604"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[2]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="278" y="114" width="278" height="99" uuid="4fd3eb48-e5d2-405e-ba6f-bd68123c910f"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[6]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="15" width="278" height="99" uuid="c1d2e667-3ac2-49d7-8f8a-28a5f1872979"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[1]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="98" y="428" width="111" height="9" uuid="4a481777-a941-4332-88f2-bd12383eede3"/>
+				<textElement>
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[Sello digital autoridad educativa:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="98" y="471" width="458" height="90" uuid="490baea1-4181-4b22-ba87-8b81b98d2ea1"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Con fundamento en lo dispuesto por el artículo 141 de la Ley General de Educación, los certificados de estudios expedidos por instituciones del Sistema Educativo Nacional, tienen validez en la República Mexicana sin necesidad de trámites adicionales de autenticación o legalización, favoreciendo el tránsito del educando por el Sistema Educativo Nacional."
++"\n\nLa presente certificación de estudios es expedida previa consulta y validación de antecedentes escolares con el Área de Control Escolar de la Dirección de Planeación Educativa del Instituto Estatal de Educación Pública de Oaxaca y, ha sido firmada mediante el uso de la firma electrónica avanzada, amparada por un certificado vigente a la fecha de su elaboración; y, es válida de conformidad con lo dispuesto en los artículos 1, 8, 9, 11, 12 y 18 de la Ley de Firma Electrónica Avanzada para el Estado de Oaxaca y sus municipios."
++"\n\nLa versión electrónica del presente documento, su integridad y autoría se podrá comprobar a través de la página electrónica de la Dirección de Planeación Educativa del Instituto Estatal de Educación Pública de Oaxaca por medio de la siguiente liga:  http://controlescolar.ieepoplaneacionedu.info. De igual manera, podrá verificar el documento electrónico por medio del código QR."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="98" y="458" width="87" height="9" uuid="ac05f6d7-75e0-4af2-b7b8-9e7d592e99d7"/>
+				<textElement>
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[Fecha y hora de timbrado:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="23" y="434" width="42" height="14" uuid="d5ea3f6c-3c51-4d37-9512-0e819b71bcdd"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="MontserratBoldReport" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{promediogral}<6.0 ?"*":$F{promediogral}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="98" y="413" width="69" height="9" uuid="37e466aa-42e5-48e4-a62c-7126d1dd0db3"/>
+				<textElement>
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[Autoridad educativa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="98" y="420" width="111" height="9" uuid="a3547450-6740-4197-9442-7a69daab4ece"/>
+				<textElement>
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[No. certificado autoridad educativa: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="415" width="86" height="17" uuid="b0963db3-75be-4e0e-8100-83beffe925ea"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="MontserratBoldReport" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PROMEDIO GENERAL\nDE APROVECHAMIENTO"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="244" y="0" width="34" height="15" uuid="cc43b082-bb2a-403e-b79f-4aa322471a04"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[CALIF. FINAL]]></text>
+			</staticText>
+		</band>
+		<band height="562">
+			<printWhenExpression><![CDATA[$F{curs_aprob}>=56]]></printWhenExpression>
+			<image>
+				<reportElement x="0" y="59" width="505" height="498" uuid="6acc2cb9-2e54-4235-9875-bf473b2fa1f7"/>
+				<imageExpression><![CDATA["../../../imgs/FONDO AGUILA V.png"]]></imageExpression>
+			</image>
+			<rectangle radius="3">
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="0" width="556" height="412" uuid="773e357d-d7e1-46d8-8dde-824e2acb8dda"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<frame>
+				<reportElement stretchType="RelativeToTallestObject" x="278" y="15" width="244" height="396" uuid="09ed9498-f330-43d4-be9c-8f8f8a70221f"/>
+				<box>
+					<rightPen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<subreport>
+				<reportElement positionType="Float" x="278" y="15" width="278" height="82" uuid="f9061e44-51d3-4b33-bc73-074610d3d480"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[5]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="23" y="434" width="42" height="14" uuid="307a825b-6054-4ed9-b2d9-4c376dc4b515"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="MontserratBoldReport" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{promediogral}<6.0 ?"*":$F{promediogral}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="213" width="278" height="99" uuid="9d43bf70-1812-4617-b06f-cc44d3674c7a"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[3]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="244" height="15" uuid="0b522293-a911-459d-bbdb-3325719884e5"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="MontserratRegularReport" size="7"/>
+				</textElement>
+				<text><![CDATA[ASIGNATURAS / CURSOS]]></text>
+			</staticText>
+			<subreport>
+				<reportElement positionType="Float" x="278" y="180" width="278" height="90" uuid="c9e6fb0b-37d4-4ca4-b11d-2c6be123fcc6"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[7]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="15" width="278" height="99" uuid="c2edb609-0b35-4ec7-92a4-58d33eb73880"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[1]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement positionType="Float" x="244" y="0" width="34" height="15" uuid="7e7d8f3f-4d7f-4ca6-908a-7e2e2dd5f4bc"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[CALIF. FINAL]]></text>
+			</staticText>
+			<frame>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="15" width="244" height="396" uuid="5247ae46-849f-4268-9c72-6850d1aa757e"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="244" y="15" width="34" height="396" uuid="abb0714b-17fd-4848-9b9f-e453e0078c60"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<textField>
+				<reportElement x="0" y="415" width="86" height="17" uuid="6a5b7b12-a456-4c35-9bc8-4802a512b87e"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="MontserratBoldReport" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PROMEDIO GENERAL\nDE APROVECHAMIENTO"]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="114" width="278" height="99" uuid="ddd23eb7-98c7-43c1-8ade-940dec22f403"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[2]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="98" y="428" width="111" height="9" uuid="e36b02ce-b715-47f5-9d0c-d9d8bcf7edb7"/>
+				<textElement>
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[Sello digital autoridad educativa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="278" y="0" width="244" height="15" uuid="19e00f2f-d1ec-4a12-9bf3-09461e8d225c"/>
+				<box>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="MontserratRegularReport" size="7"/>
+				</textElement>
+				<text><![CDATA[ASIGNATURAS / CURSOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="522" y="0" width="34" height="15" uuid="fc89a2c9-b192-4255-b0d7-0d9afce4df7e"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[CALIF. FINAL]]></text>
+			</staticText>
+			<subreport>
+				<reportElement positionType="Float" x="278" y="270" width="278" height="131" uuid="da41606f-02a2-4d8b-b2a4-66939891a73b"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[8]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="98" y="457" width="87" height="9" uuid="aa8293b1-113a-4f10-82af-66368e48f4f0"/>
+				<textElement>
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[Fecha y hora de timbrado:]]></text>
+			</staticText>
+			<frame>
+				<reportElement stretchType="RelativeToTallestObject" x="522" y="15" width="34" height="396" uuid="b84f8644-fd50-46b9-b147-44991e0d629a"/>
+				<box>
+					<rightPen lineWidth="0.0"/>
+				</box>
+			</frame>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="98" y="470" width="458" height="90" uuid="26f3fbdc-2c12-45c4-b927-666c229b9734"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Con fundamento en lo dispuesto por el artículo 141 de la Ley General de Educación, los certificados de estudios expedidos por instituciones del Sistema Educativo Nacional, tienen validez en la República Mexicana sin necesidad de trámites adicionales de autenticación o legalización, favoreciendo el tránsito del educando por el Sistema Educativo Nacional."
++"\n\nLa presente certificación de estudios es expedida previa consulta y validación de antecedentes escolares con el Área de Control Escolar de la Dirección de Planeación Educativa del Instituto Estatal de Educación Pública de Oaxaca y, ha sido firmada mediante el uso de la firma electrónica avanzada, amparada por un certificado vigente a la fecha de su elaboración; y, es válida de conformidad con lo dispuesto en los artículos 1, 8, 9, 11, 12 y 18 de la Ley de Firma Electrónica Avanzada para el Estado de Oaxaca y sus municipios."
++"\n\nLa versión electrónica del presente documento, su integridad y autoría se podrá comprobar a través de la página electrónica de la Dirección de Planeación Educativa del Instituto Estatal de Educación Pública de Oaxaca por medio de la siguiente liga:  http://controlescolar.ieepoplaneacionedu.info. De igual manera, podrá verificar el documento electrónico por medio del código QR."]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement positionType="Float" x="278" y="97" width="278" height="83" uuid="ba2288bb-0cf8-4780-b727-7ef66c1646fc"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[6]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="312" width="278" height="99" uuid="95ed121b-a399-4bec-bc86-2c79fd671556"/>
+				<subreportParameter name="cvecarrera">
+					<subreportParameterExpression><![CDATA[$F{cvecarrera}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre">
+					<subreportParameterExpression><![CDATA[4]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idalu">
+					<subreportParameterExpression><![CDATA[$F{idalu}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["materias.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="98" y="420" width="111" height="9" uuid="79dda696-9422-44d8-b79a-783932c5db8b"/>
+				<textElement>
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[No. certificado autoridad educativa: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="98" y="413" width="69" height="9" uuid="00de5705-89be-4a2c-a2c3-34af0dc019bf"/>
+				<textElement>
+					<font fontName="MontserratRegularReport" size="6"/>
+				</textElement>
+				<text><![CDATA[Autoridad educativa:]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

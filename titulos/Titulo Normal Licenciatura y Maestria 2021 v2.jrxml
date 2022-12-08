@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Titulo Normal Licenciatura y Maestria 2021" language="groovy" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="5" bottomMargin="8" uuid="8b01d370-47f8-4313-8ee7-684826ea493d">
+	<property name="ireport.zoom" value="1.4641000000000013"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="528"/>
+	<style name="sombreado_gris"/>
+	<parameter name="nivel" class="java.lang.String"/>
+	<parameter name="num_paquete" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select folio,curp,nombre, primerapellido, segundoapellido,cvecarrera,nombrecarrera,
+CONCAT(nombre,' ',primerapellido,' ',segundoapellido) as nombrecompleto,
+fechainiciocarrera, fechaterminacioncarrera,
+(case when trim(modalidadTitulacion)='POR TESIS' then fechaexamenprofesional else fechaExencionExamenProfesional end) AS fechaexamenprofesional,
+entidadfederativaexpedicion,fechaexpedicion,
+nombreinstitucion,cveinstitucion,substring(nombrecarrera,1,3) as nivel,
+sellodigitalieepo1,sellodigitalieepo2,
+firmaElecIEEPO,firmaElecMEDSUP,
+concat(nombreautoridad,' ',primerapellidoautoridad,' ',segundoapellidoautoridad) as autoridad1,
+cargoautoridad as cargo1,nocertificadoresponsable as no_certi1,
+(select concat(nombreautoridad,' ',primerapellidoautoridad,' ',segundoapellidoautoridad) from titulosautoridadfirmante where idautoridadfirmante=tfe.idfirmante2pdf) as autoridad2,
+(select cargoautoridad from titulosautoridadfirmante where idautoridadfirmante=tfe.idfirmante2pdf) as cargo2,
+(select nocertificadoresponsable from titulosautoridadfirmante where idautoridadfirmante=tfe.idfirmante2pdf) as no_certi2
+from siceen.titulosfolios tf, siceen.titulosfirmaelec tfe, titulosautoridadfirmante af
+where tf.idtitulofolio = tfe.idtitulofolio
+and tf.idalu = tfe.idalu
+and tf.cicescinilib = tfe.cicescinilib
+and tfe.idfirmante1pdf = idautoridadfirmante
+and substring(tf.cct,3,3) in ('DNL','PNL')
+and sellodigitalieepo1 is not null AND sellodigitalieepo1!=''
+and sellodigitalieepo2 is not null AND sellodigitalieepo2!=''
+AND (pdf_creado is null OR pdf_creado!='SI')
+ORDER BY folio]]>
+	</queryString>
+	<field name="folio" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="curp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="primerapellido" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="segundoapellido" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombrecompleto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cvecarrera" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombrecarrera" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechainiciocarrera" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaterminacioncarrera" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaexamenprofesional" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="entidadfederativaexpedicion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaexpedicion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreinstitucion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cveinstitucion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nivel" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sellodigitalieepo1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sellodigitalieepo2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="firmaElecIEEPO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="firmaElecMEDSUP" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="autoridad1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cargo1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="no_certi1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="autoridad2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cargo2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="no_certi2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band height="779">
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="0" width="612" height="779" uuid="5034c92a-d871-4561-adbd-67de99023053"/>
+				<imageExpression><![CDATA["..\\..\\imgs\\marco_sin fondo.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="152" y="235" width="308" height="308" uuid="f7bfaa47-e50e-4ae8-bac6-544b2b2e62f4"/>
+				<imageExpression><![CDATA["..\\..\\imgs\\escudoNacional.png"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<detail>
+		<band height="779" splitType="Stretch">
+			<textField>
+				<reportElement x="51" y="58" width="269" height="38" uuid="ffe1a51e-a8b1-43b5-b452-6caf70b06f3d"/>
+				<textElement markup="none">
+					<font fontName="SoberanaSansReport"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Estados Unidos Mexicanos\n" +
+"Instituto Estatal de Educación Pública de Oaxaca\n" +
+( $F{nivel}.equals("LIC")? "Título Profesional Electrónico":"Grado Académico Electrónico" )]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="425" y="52" width="135" height="15" uuid="fe1f808b-c193-4177-83a5-edb92e888212"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<text><![CDATA[Folio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="425" y="82" width="135" height="15" backcolor="#999999" uuid="99d32da1-08a3-44bb-bd8b-17780540b62e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Clave Unica de Registro de Población]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="425" y="97" width="135" height="15" uuid="67af6a0c-53e3-4599-9170-992766dc1568"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{curp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="67" width="135" height="15" uuid="13f396a9-e1ff-4fe5-a5a1-b7f5b535da61"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="51" y="119" width="253" height="15" uuid="51b21dca-96c2-49e1-b671-8caceab46710"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport"/>
+				</textElement>
+				<text><![CDATA[Se otorga a:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="51" y="135" width="510" height="13" forecolor="#000000" backcolor="#999999" uuid="d18d932f-873b-4253-8923-d0f425bfef2f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="8" isBold="false"/>
+					<paragraph spacingAfter="1"/>
+				</textElement>
+				<text><![CDATA[Datos del Profesionista]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="51" y="162" width="170" height="10" uuid="e6c123a9-0254-42c7-abf4-b48ba178a29a"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="221" y="162" width="170" height="10" uuid="7a6587e9-8bf1-4fff-a882-c49413601452"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{primerapellido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="162" width="170" height="10" uuid="c4fd0a81-45bd-494c-b810-979e32624d8c"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{segundoapellido}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="51" y="173" width="170" height="10" forecolor="#000000" uuid="2a898d07-1eb3-47a3-9c16-322bb01f2d7d"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nombre(s)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="173" width="170" height="10" forecolor="#000000" uuid="2dffa68e-ddd7-4fac-8444-ab74acd4f100"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Primer apellido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="173" width="170" height="10" forecolor="#000000" uuid="e95c4076-f073-486e-a867-14950d110534"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Segundo apellido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="210" width="170" height="10" forecolor="#000000" uuid="29c7e413-0e4f-4edd-aeea-38e1304c11d4"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Clave]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="247" width="146" height="10" forecolor="#000000" uuid="472c88e4-911f-4400-8389-efd96f3b0756"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha de inicio]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="51" y="199" width="340" height="10" uuid="e1b80d92-a2c8-4bf3-ac52-bea43be3bca4"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombrecarrera}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="236" width="146" height="10" uuid="28a5ebe8-060d-44c2-a2fc-e293f2eb8da9"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechainiciocarrera}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="199" width="170" height="10" uuid="ebb9730d-e290-4ea4-b9a0-8b1d08ed9dec"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cvecarrera}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="51" y="210" width="340" height="10" forecolor="#000000" uuid="1d811856-1843-437e-9ef9-223417f8b540"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nombre de la carrera]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="197" y="236" width="146" height="10" uuid="94b4dcf7-db7d-4cae-aba0-9bf6b04ee4be"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaterminacioncarrera}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="197" y="247" width="146" height="10" forecolor="#000000" uuid="2553c3cd-5f1d-47e4-b05d-d3b2b1c271a9"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha de término]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="343" y="236" width="217" height="10" uuid="e8cb7d6f-4de5-4b52-9f34-42c57f2d7899"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaexamenprofesional}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="343" y="247" width="217" height="10" forecolor="#000000" uuid="118d8d21-dd28-4b88-a0a5-45cd8ba12a83"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha de examen profesional]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="51" y="270" width="510" height="25" uuid="e15538a6-3032-4675-a832-b711ae29b6c4"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font fontName="SoberanaSansReport" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["En virtud de que cumplió con el Plan y Programas de estudio autorizados por la Secretaría de Educación Pública y aprobó el examen profesional reglamentario."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="51" y="305" width="510" height="13" forecolor="#000000" backcolor="#999999" uuid="e0aa9519-868b-4fbe-8638-1607994960a4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="8" isBold="false"/>
+					<paragraph spacingAfter="1"/>
+				</textElement>
+				<text><![CDATA[Datos de la Institución]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="343" width="510" height="10" forecolor="#000000" uuid="95d7b44c-9de5-422b-b331-c38708823e55"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="377" width="255" height="10" forecolor="#000000" uuid="60cd27a8-b8de-4230-a3de-d0faa8accda2"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Número de autorización]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="51" y="366" width="255" height="10" uuid="1f24960d-39b1-45d9-a067-6a4db284c5cb"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cveinstitucion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="332" width="510" height="10" uuid="9e5e754c-7f0f-40c8-b855-622820bb3f6d"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreinstitucion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="305" y="366" width="255" height="10" uuid="d91ab99c-8bf4-4d1f-9e4a-df80b9e39056"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["N/A"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="51" y="377" width="255" height="10" forecolor="#000000" uuid="d7b0d13b-fae3-4c11-a5f3-12ae9e687df0"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Clave]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="51" y="429" width="255" height="10" uuid="60b93c88-d6a5-4a70-bbc2-521aecdd02e8"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entidadfederativaexpedicion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="51" y="440" width="255" height="10" forecolor="#000000" uuid="762e9967-81c2-43dc-8d1b-5754bdde8558"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Entidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="440" width="256" height="10" forecolor="#000000" uuid="1c53c8c4-06d4-4f6a-b9ea-7d510dea439d"/>
+				<box>
+					<topPen lineWidth="0.75" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="51" y="403" width="510" height="13" forecolor="#000000" backcolor="#999999" uuid="b95d9289-f84e-4283-a472-14de396d8062"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="8" isBold="false"/>
+					<paragraph spacingAfter="1"/>
+				</textElement>
+				<text><![CDATA[Lugar y fecha de expedición]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="305" y="429" width="256" height="10" uuid="9cb2ebf6-7227-4a9c-88f3-480e1b4ea5f5"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaexpedicion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="51" y="468" width="510" height="13" forecolor="#000000" backcolor="#999999" uuid="5de0b9e7-c9b6-41bb-886f-d7d67c7f46ac"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="8" isBold="false"/>
+					<paragraph spacingAfter="1"/>
+				</textElement>
+				<text><![CDATA[Firma electrónica]]></text>
+			</staticText>
+			<image>
+				<reportElement x="51" y="644" width="109" height="109" uuid="3d9c9d6d-13c1-42b7-91d0-f5fe29d4b038"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.qrcode.QRCodeWriter().encode("Alumno: "+$F{nombrecompleto}+".\nEstudios realizados: "+$F{nombrecarrera}+".\nInstitución educativa: "+$F{nombreinstitucion}+".\nFolio: "+$F{folio}+".\nConsultar en: http://controlescolar.ieepoplaneacionedu.info", com.google.zxing.BarcodeFormat.QR_CODE, 275, 275))]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="168" y="650" width="393" height="112" uuid="94e7e84b-e145-4adc-a299-1b2369138363"/>
+				<textElement textAlignment="Justified">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<text><![CDATA[Con fundamento en lo dispuesto por el artículo 141 de la Ley General de Educación, los títulos expedidos por instituciones del Sistema Educativo Nacional, tienen validez en la República Mexicana sin necesidad de trámites adicionales de autenticación o legalización, favoreciendo el tránsito del educando por el Sistema Educativo Nacional.
+
+El presente Título ha sido firmado mediante el uso de la firma electrónica avanzada, amparada por un certificado vigente a la fecha de su elaboración; y, es válido de conformidad con lo dispuesto en los artículos 1, 8, 9, 11, 12 y 18 de la ley de Firma Electrónica Avanzada para el estado de Oaxaca y sus municipios.
+
+La versión electrónica del presente documento, su integridad y autoría se podrá comprobar a través de la página electrónica de la Dirección de Planeación Educativa del Instituto Estatal  de Educación Pública de Oaxaca por medio de la siguiente liga: http://controlescolar.ieepoplaneacionedu.info. De igual manera se podrá verificar el documento electrónico por medio del código QR. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="565" width="109" height="10" uuid="2472ec7b-32ae-4418-ae6c-324268c16336"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<text><![CDATA[Autoridad educativa: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="51" y="585" width="253" height="10" uuid="816de77a-deee-4ade-b1f1-247ea62c0cc2"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No. Certificado autoridad educativa:  "+$F{no_certi2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="51" y="520" width="170" height="10" uuid="befc2634-735c-4b64-b2a9-da96478b9814"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<text><![CDATA[Sello digital autoridad educativa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="51" y="606" width="510" height="33" uuid="323145d1-691a-4e63-84c7-e9a1630893b7"/>
+				<textElement textAlignment="Justified">
+					<font fontName="SoberanaSansReport" size="7"/>
+					<paragraph lineSpacing="Proportional"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sellodigitalieepo2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="51" y="595" width="170" height="10" uuid="4dc8e4a8-3557-48ae-bfcb-cb58b5ac7b0d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<text><![CDATA[Sello digital autoridad educativa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="51" y="509" width="230" height="10" uuid="18325661-04f7-4e90-b7bf-5a4742347816"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No. Certificado autoridad educativa:  "+$F{no_certi1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="531" width="510" height="26" uuid="4d460cd3-b805-482d-af43-9551fd5bde91"/>
+				<textElement textAlignment="Justified">
+					<font fontName="SoberanaSansReport" size="7"/>
+					<paragraph lineSpacing="Proportional"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sellodigitalieepo1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="51" y="489" width="117" height="10" uuid="c383146a-cf4b-427f-8267-5e5705cf8bf3"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<text><![CDATA[Autoridad educativa: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="51" y="500" width="510" height="10" uuid="2408bd34-8486-4f48-8c5a-c5b4974277db"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{autoridad1}+", "+$F{cargo1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="575" width="509" height="10" uuid="5a90ecc8-996f-4f23-a1ea-b47b595a98b0"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="SoberanaSansReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{autoridad2}+", "+$F{cargo2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

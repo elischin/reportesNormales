@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="materias64" language="groovy" pageWidth="277" pageHeight="28" columnWidth="277" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="72a879f4-6484-4214-a954-ef6f3e8858cc">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idalu" class="java.lang.Integer"/>
+	<parameter name="cvecarrera" class="java.lang.Integer"/>
+	<parameter name="semestre" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT ac.cicescini,ac.cicescfin,amc.idcct,amc.promedio,
+pm.cvecarrera,pm.semestre,pm.cvetipmat,pm.cvemat,m.desmat,ac.planestud
+from alumnogdo_certi ac, alumnomaterias_certi amc, plan_materias pm, materias m
+where
+ac.idalu = $P{idalu}
+and ac.semestre = $P{semestre}
+and ac.idalu = amc.idalu
+and ac.semestre=amc.semestre
+and amc.semestre = pm.semestre
+and pm.cvecarrera = $P{cvecarrera}
+and amc.cvetipmat = pm.cvetipmat
+and amc.cvemat = pm.cvemat
+and pm.idmateria = m.idmateria]]>
+	</queryString>
+	<field name="cicescini" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cicescfin" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idcct" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="promedio" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cvecarrera" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="semestre" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cvetipmat" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cvemat" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="desmat" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="planestud" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<columnHeader>
+		<band height="11">
+			<textField>
+				<reportElement x="0" y="1" width="244" height="9" uuid="a729cc16-73a6-408f-8b37-4b8d4de10a4c"/>
+				<box>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom" markup="none">
+					<font fontName="MontserratRegularReport" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{semestre}==1 ? "PRIMER" :
+    ($F{semestre}==2 ? "SEGUNDO" :
+        ($F{semestre}==3 ? "TERCER":
+            ($F{semestre}==4 ? "CUARTO" :
+                ($F{semestre}==5 ? "QUINTO" :
+                    ($F{semestre}==6 ? "SEXTO":
+                        ($F{semestre}==7 ? "SÉPTIMO" :
+                            ($F{semestre}==8 ? "OCTAVO" :
+                                ($F{semestre}==9 ? "NOVENO" :
+                                    ($F{semestre}==10 ? "DÉCIMO" :
+                                        ($F{semestre}==11 ? "UNDÉCIMO" :
+                                            ($F{semestre}==12 ? "DUODÉCIMO" :
+                                " "))))))))))))
++" SEMESTRE ("+$F{cicescini}+" - "+$F{cicescfin} + ")"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="8" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="244" height="8" uuid="2692951f-c3a5-4bae-bb8c-67d7d92e5665"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="MontserratRegularReport" size="5"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{desmat}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="244" y="0" width="33" height="8" uuid="23819d05-04f3-4687-8135-46e8738300b4"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="MontserratRegularReport" size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{promedio}==10.0 ? "10" : (($F{cvecarrera} == 244302 ||
+$F{cvecarrera}==206375 || $F{cvecarrera}==206301 ||
+$F{cvecarrera}==208307 || $F{planestud}.equals( 1997 ) ||
+$F{planestud}.equals( 1984 ) || $F{planestud}.equals( 1983 ) ||
+($F{planestud}.equals( 1999 ) && $F{cvecarrera}.equals(241301))) ? $F{promedio} : $F{promedio}.intValue())]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
